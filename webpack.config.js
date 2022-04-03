@@ -2,9 +2,12 @@ const HtmlWebPackPlugin    = require('html-webpack-plugin');
 //const { loader } = require('mini-css-extract-plugin');
 const MinicssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin           = require("copy-webpack-plugin");
+const path = require('path')
  
 module.exports = {
  
+    entry: './src/index.ts',
+    devtool: 'inline-source-map',
     mode: 'development',
     module: {
         rules:[
@@ -34,8 +37,20 @@ module.exports = {
             {
                 test: /\.(png|jpe?g|gif)$/,
                 loader: 'file-loader'
-            }
-        ]
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+        ],
+    },
+    resolve: {
+        extensions: ['.tsx','.ts','.js'],
+    },
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
         new HtmlWebPackPlugin({
@@ -54,4 +69,4 @@ module.exports = {
  
     ]
  
-}
+};
